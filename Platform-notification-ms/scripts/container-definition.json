@@ -1,0 +1,103 @@
+[
+    {
+      "cpu": 0,
+      "environment": [
+        {
+          "name" : "SAGEMAKER_BASE_ENDPOINT",
+          "value" : "https://runtime.sagemaker.us-east-1.amazonaws.com"
+       },
+       {
+          "name" : "FACEMATCH_ENDPOINT_PATH",
+          "value" : "/endpoints/facematching-1677147627/invocations"
+       },
+       {
+          "name" : "DATASOURCE_URL",
+          "value" : "jdbc:postgresql://52.211.127.247:5436/verified-ng-merged"
+       },
+       {
+          "name" : "AWS_ACCESS_KEY",
+          "value" : "AKIA2ZY34UATJMPQMLZB"
+       },
+       {
+          "name" : "AWS_SECRET_KEY",
+          "value" : "UpUbAdUx09M1IFEu9ZlUGu2mNOChIkMKfDuamP3p"
+       },
+       {
+          "name" : "DIALECT",
+          "value" : "org.hibernate.dialect.PostgreSQL92Dialect"
+       },
+       {
+          "name" : "DRIVER_CLASS",
+          "value" : "org.postgresql.Driver"
+       },
+       {
+          "name" : "AWS_REGION",
+          "value" : "us-east-1"
+       },
+       {
+          "name" : "SERVER_CONTEXT_PATH",
+          "value" : "/verified-ai"
+       },
+       {
+          "name" : "SERVER_PORT",
+          "value" : "8080"
+       },
+       {
+          "name" : "SHOW_SQL",
+          "value" : "true"
+       },
+       {
+          "name" : "SERVICE_NAME",
+          "value" : "sagemaker"
+       },
+       {
+          "name" : "FACE_SIMILARITY_THRESHOLD",
+          "value" : "70"
+       },
+       {
+         "name" : "BACKGROUND_CLEANUP_ENDPOINT_PATH",
+         "value" : "/endpoints/BackgroundCleanup-1677106144/invocations"
+       },
+       {
+         "name" : "LIVELINESS_ENDPOINT_PATH",
+         "value" : "/endpoints/passive-livliness-1678204299/invocations"
+       },
+       {
+         "name" : "QUALITYCHECK_ENDPOINT_PATH",
+         "value" : "http://icao-dev-lb-2080208458.us-east-1.elb.amazonaws.com/qualitycheck"
+       },
+       {
+         "name" : "ENDPOINTS_WEB_EXPOSURE_INCLUDE",
+         "value" : "*"
+       },
+       {
+         "name" : "ENDPOINT_HEALTH_SHOW-DETAILS",
+         "value" : "always"
+       },
+       {
+          "name" : "FACE_PREDICTION_SCORE",
+          "value" : "0.4"
+       }
+      ],
+      "essential": true,
+      "image": "${ecr_repo_url}:${image_id}",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${loggroup}",
+          "awslogs-region": "${region}",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "mountPoints": [],
+      "name": "${task_name}",
+      "portMappings": [
+        {
+          "containerPort": ${container_port},
+          "hostPort": ${container_port},
+          "protocol": "tcp"
+        }
+      ],
+      "volumesFrom": []
+    }
+  ]
