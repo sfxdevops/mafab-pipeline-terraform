@@ -1,4 +1,4 @@
-version: 0.2notification
+version: 0.2
 env:
   parameter-store:
     NPM_REGISTRY_USER: "NPM_REGISTRY_USER"
