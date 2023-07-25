@@ -22,7 +22,7 @@
 # }
 
 resource "aws_codebuild_project" "mfb_codebuild_project" {
-  depends_on    = [aws_ecr_repository.mfb-registration-ms-ecr]
+  depends_on    = [aws_ecr_repository.mfb-verification-ms-ecr]
   name          = "${var.environment}-${var.project}-${var.project_component}"
   description   = "Build project for ${var.project_component} for ${var.project} on ${var.environment}"
   # service_role  = aws_iam_role.ecs_codebuild.arn
@@ -73,7 +73,7 @@ resource "aws_codebuild_project" "mfb_codebuild_project" {
     }
   }
 
-  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "snapshot-dev" : "snapshot-dev")
+  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "DEVOPSS-137" : "staging-dev")
 
   tags = {
     createdby   = var.createdby
@@ -86,7 +86,7 @@ resource "aws_codebuild_project" "mfb_codebuild_project" {
 data "template_file" "buildspec" {
   template = (var.tech == "java" ? file("${var.buildspec_java}") : file("${var.buildspec_node}")) #file("${var.buildspec}")
   vars = {
-    ecr_repo_url = aws_ecr_repository.mfb-registration-ms-ecr.repository_url
+    ecr_repo_url = aws_ecr_repository.mfb-verification-ms-ecr.repository_url
     region       = var.region
     # image_name   = "${var.environment}-${var.project}/${var.project_component}"
   }

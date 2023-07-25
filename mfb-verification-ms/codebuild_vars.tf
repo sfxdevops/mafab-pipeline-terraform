@@ -19,5 +19,5 @@ variable "code_repo" {
 }
 
 variable "repo_branch" {
-  default = "snapshot-dev"
+  default = "DEVOPSS-179"
 }
