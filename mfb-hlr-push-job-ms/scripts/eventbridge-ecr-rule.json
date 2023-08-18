@@ -1,0 +1,10 @@
+{
+  "source": ["aws.ecr"],
+  "detail-type": ["ECR Image Action"],
+  "detail": {
+    "action-type": ["PUSH"],
+    "result": ["SUCCESS"],
+    "repository-name": ["mfb/user-ms", "mfb/registration-ms", "mfb/form-config", "mfb/subscriber-ms", "mfb/registration-validation-listener", "mfb/verification-ms", "mfb/subscriber-update-job-ms", "mfb/subscriber-capture-job-ms", "mfb/msisdn-capture-job-ms", "mfb/web-portal", "sfx-platform/auth-ms", "sfx-platform/user-ms", "sfx-platform/device-mgmt-ms", "sfx-platform/notification-ms", "sfx-platform/document-ms", "sfx-platform/master-data-ms", "mfb/hlr-push-job-ms"],
+    "image-tag": ["latest"]
+  }
+}
