@@ -1,0 +1,48 @@
+version: 0.2
+env:
+  parameter-store:
+    NPM_REGISTRY_USER: "NPM_REGISTRY_USER"
+    NPM_REGISTRY_PASSWORD: "NPM_REGISTRY_PASSWORD"
+    NPM_REGISTRY_EMAIL: "NPM_EMAIL"
+  variables:
+    AWS_DEFAULT_REGION: us-east-1
+    CONTAINER_NAME: field-validator-ms
+    IMAGE_REPO_NAME: sfx-platform/field-validator-ms
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_URI
+      - aws --version
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo $IMAGE_TAG
+  build:
+    commands:
+      - NPM_REGISTRY=http://npm.seamfix.com
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo $IMAGE_TAG
+      - AWS_ECR_REPO_URI=$AWS_ECR_URI/$IMAGE_REPO_NAME
+      - echo $AWS_ECR_REPO_URI
+      - docker pull $AWS_ECR_REPO_URI:latest || true
+      - docker build 
+          --build-arg NPM_USERNAME=$NPM_REGISTRY_USER 
+          --build-arg NPM_PASSWORD=$NPM_REGISTRY_PASSWORD 
+          --build-arg NPM_EMAIL=$NPM_REGISTRY_EMAIL 
+          --build-arg NPM_URL=$NPM_REGISTRY  
+          --cache-from $AWS_ECR_REPO_URI:latest 
+          --tag $AWS_ECR_REPO_URI:latest 
+          --tag $AWS_ECR_REPO_URI:$IMAGE_TAG -f Dockerfile .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - AWS_ECR_REPO_URI=$AWS_ECR_URI/$IMAGE_REPO_NAME
+      - echo $IMAGE_TAG
+      - docker push $AWS_ECR_REPO_URI:latest
+      - docker push $AWS_ECR_REPO_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$CONTAINER_NAME" "$AWS_ECR_REPO_URI:$IMAGE_TAG" | tee imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
