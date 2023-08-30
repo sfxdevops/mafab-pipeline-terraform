@@ -24,7 +24,7 @@ resource "aws_codepipeline" "mfb_codepipeline_project" {
       configuration = {
         ConnectionArn        = var.codestar_connector_credentials
         FullRepositoryId     = var.repo_id
-        BranchName           = (var.environment == "prod" ? "master" : var.environment == "staging" ? "DEVOPS-1728" : "staging-dev")
+        BranchName           = (var.environment == "prod" ? "master" : var.environment == "staging" ? "snapshot-dev" : "staging-dev")
         OutputArtifactFormat = "CODE_ZIP"
       }
     }

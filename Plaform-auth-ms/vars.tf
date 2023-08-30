@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "aws_profile" {
-  default = "sfx"
+  default = "ddennis"
 }
 
 # terraform {
