@@ -15,7 +15,7 @@ variable "buildspec_node" {
 }
 
 variable "code_repo" {
-  default = "https://github.com/seamfix/mfb-mono-repo.git"
+  default = "https://github.com/seamfix/platform-composite-validator-listener-ms.git"
 }
 
 variable "repo_branch" {

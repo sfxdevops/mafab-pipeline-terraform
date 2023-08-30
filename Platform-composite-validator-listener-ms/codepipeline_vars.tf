@@ -1,5 +1,5 @@
 variable "repo_id" {
-  default = "seamfix/platform-notification-ms"
+  default = "seamfix/platform-composite-validator-listener-ms"
 }
 
 variable "codepipeline_role" {

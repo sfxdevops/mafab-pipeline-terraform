@@ -73,7 +73,7 @@ resource "aws_codebuild_project" "mfb_codebuild_project" {
     }
   }
 
-  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "DEVOPSS-258" : "staging-dev")
+  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "DEVOPSS-258" : "snapshot-dev")
 
   tags = {
     createdby   = var.createdby

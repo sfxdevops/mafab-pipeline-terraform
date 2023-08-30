@@ -22,9 +22,9 @@
 # }
 
 resource "aws_codebuild_project" "mfb_codebuild_project" {
-  depends_on    = [aws_ecr_repository.mfb-user-ms-ecr]
-  name          = "${var.environment}-${var.project}-${var.project_component}"
-  description   = "Build project for ${var.project_component} for ${var.project} on ${var.environment}"
+  depends_on  = [aws_ecr_repository.platform-composite-validator-listener-ecr]
+  name        = "${var.environment}-${var.project}-${var.project_component}"
+  description = "Build project for ${var.project_component} for ${var.project} on ${var.environment}"
   # service_role  = aws_iam_role.ecs_codebuild.arn
   service_role  = "arn:aws:iam::341481854267:role/project-mafab-dev-role"
   badge_enabled = false
@@ -73,7 +73,7 @@ resource "aws_codebuild_project" "mfb_codebuild_project" {
     }
   }
 
-  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "DEVOPS-1728" : "snapshot-dev")
+  source_version = (var.environment == "prod" ? "master" : var.environment == "staging" ? "snapshot-dev" : "staging-dev")
 
   tags = {
     createdby   = var.createdby
@@ -86,7 +86,7 @@ resource "aws_codebuild_project" "mfb_codebuild_project" {
 data "template_file" "buildspec" {
   template = (var.tech == "java" ? file("${var.buildspec_java}") : file("${var.buildspec_node}")) #file("${var.buildspec}")
   vars = {
-    ecr_repo_url = aws_ecr_repository.mfb-user-ms-ecr.repository_url
+    ecr_repo_url = aws_ecr_repository.platform-composite-validator-listener-ecr.repository_url
     region       = var.region
     # image_name   = "${var.environment}-${var.project}/${var.project_component}"
   }
