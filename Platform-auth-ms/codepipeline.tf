@@ -1,8 +1,8 @@
 resource "aws_codepipeline" "mfb_codepipeline_project" {
   depends_on = [aws_codebuild_project.mfb_codebuild_project]
   name       = "${var.environment}-${var.project}-${var.project_component}-pipeline"
-  # role_arn   = "arn:aws:iam::341481854267:role/project-mafab-dev-role"
-  role_arn   = aws_iam_role.mfb_codepipeline.arn
+  role_arn   = "arn:aws:iam::341481854267:role/staging-sfx-platform-codepipeline-role"
+  # role_arn   = aws_iam_role.mfb_codepipeline.arn
 
   artifact_store {
     # location = (var.environment == "prod" ? "codepipeline-us-east-1-454305357471" : var.environment == "stage" ? "codepipeline-us-east-2-404459981228" : "codepipeline-us-east-1-454305357471")
