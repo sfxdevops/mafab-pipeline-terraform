@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment{
-        CONTAINER_NAME = 'registration-validation-listener'
-        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/registration-validation-listener:latest"
-        PORT='3339'
+        CONTAINER_NAME = 'user-ms'
+        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/user-ms:latest"
+        PORT='3337'
     }
 
     stages {

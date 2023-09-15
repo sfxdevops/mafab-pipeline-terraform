@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment{
-        CONTAINER_NAME = 'verification-ms'
-        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/verification-ms:latest"
-        PORT='3338'
+        CONTAINER_NAME = 'sim-activation-job-ms'
+        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/sim-activation-job-ms:latest"
+        PORT='3350'
     }
 
     stages {

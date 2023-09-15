@@ -1,9 +1,9 @@
 pipeline {
     agent any
     environment{
-        CONTAINER_NAME = 'registration-validation-listener'
-        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/registration-validation-listener:latest"
-        PORT='3339'
+        CONTAINER_NAME = 'web-portal'
+        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/web-portal:latest"
+        PORT='8080'
     }
 
     stages {
@@ -24,7 +24,7 @@ pipeline {
 	                echo "running container " "$CONTAINER_NAME"
 	                docker stop "$CONTAINER_NAME"
 	                docker rm "$CONTAINER_NAME"
-                    docker run --name "$CONTAINER_NAME" --env-file=/home/svc_seamfix/mfb-app/.env -d -p $PORT:$PORT "$IMAGE_URL"
+                    docker run --name "$CONTAINER_NAME" --env-file=/home/svc_seamfix/mfb-app/.env -d -p $PORT:80 "$IMAGE_URL"
                    '''
             }
         }
