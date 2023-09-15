@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    environment{
+        CONTAINER_NAME = 'form-config'
+        IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/mfb/form-config:latest"
+        PORT='3334'
+    }
+
+    stages {
+        stage('DeployContainer') {
+            steps {
+                echo 'Hello World'
+                sh '''
+                    echo "${IMAGE_URL}"
+                    echo 'connect to remote server and pull image from registry'
+                    ssh -T ${MFB_LINUX_POC_USER}@${MFB_LINUX_POC_IP} <<- END
+                    whoami
+                    echo 'login to ecr'
+                    echo "${IMAGE_URL}"
+                    echo "$CONTAINER_NAME" AWS_ID
+                    aws ecr --profile sfxaws get-login-password  --region us-east-1 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com
+	                echo "pulling image from " "$IMAGE_URL"
+	                docker pull "$IMAGE_URL"
+	                echo "running container " "$CONTAINER_NAME"
+	                docker stop "$CONTAINER_NAME"
+	                docker rm "$CONTAINER_NAME"
+                    docker run --name "$CONTAINER_NAME" --env-file=/home/svc_seamfix/mfb-app/.env -d -p $PORT:$PORT "$IMAGE_URL"
+                   '''
+            }
+        }
+    }
+    post {
+        failure {
+            slackSend color: "danger", message: "Build failed ${env.JOB_NAME} build no: ${env.BUILD_NUMBER}.\n\nView the log at:\n (<${env.BUILD_URL}|Open>)\n\nDeployment process failed for ${env.JOB_NAME}"
+        }
+    
+        success{
+            slackSend color: "good", message: "Build successful ${env.JOB_NAME} build no: ${env.BUILD_NUMBER}.\n\nView the log at:\n (<${env.BUILD_URL}|Open>)\n\nDeployment process completed for ${env.JOB_NAME}"
+        }
+        
+        aborted{
+            slackSend color: "warning", message: "Build was aborted ${env.JOB_NAME} build no: ${env.BUILD_NUMBER}.\n\nView the log at:\n (<${env.BUILD_URL}|Open>)\n\nDeployment process aborted for ${env.JOB_NAME}"
+        }
+    }
+}
