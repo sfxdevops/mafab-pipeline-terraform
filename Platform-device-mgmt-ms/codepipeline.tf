@@ -46,6 +46,27 @@ resource "aws_codepipeline" "mfb_codepipeline_project" {
       }
     }
   }
+
+  stage {
+    name = "Deploy"
+
+    action {
+      name            = "Deploy"
+      category        = "Deploy"
+      owner           = "AWS"
+      provider        = "CodeDeploy"
+      input_artifacts = ["build_output"]
+      version         = "1"
+
+      configuration = {
+        ApplicationName             = aws_codedeploy_app.fingerprint_codedeploy_app.name
+        DeploymentGroupName         = aws_codedeploy_deployment_group.fingerprint_codedeploy_group.deployment_group_name
+        # DeploymentConfigName        = "CodeDeployDefault.OneAtATime"
+        # ApplicationName             = "Fingerprint-Application"
+        # DeploymentGroupName         = "Fingerprint-DeploymentGroup"
+      }
+    }
+  }
   
 }
 
