@@ -3,7 +3,7 @@ pipeline {
     environment{
         CONTAINER_NAME = 'platform-license-ms'
         IMAGE_URL = "${AWS_ID}.dkr.ecr.us-east-1.amazonaws.com/sfx-platform/license-ms:latest"
-        PORT = 3600
+        PORT = 3900
     }
 
     stages {
