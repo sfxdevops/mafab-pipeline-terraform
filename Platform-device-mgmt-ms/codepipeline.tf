@@ -70,6 +70,58 @@ resource "aws_codepipeline" "mfb_codepipeline_project" {
   
 }
 
+resource "aws_iam_role" "mfb_codedeploy_role" {
+  name = "mfb-codedeploy-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "codedeploy.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+  role       = "${aws_iam_role.mfb_codedeploy_role.name}"
+}
+
+resource "aws_codedeploy_app" "mfb_codedeploy_app" {
+  name = "mfb-platform-device-mgmt-ms-app"
+  compute_platform = "Server"
+}
+
+
+resource "aws_codedeploy_deployment_group" "mfb_codedeploy_group" {
+  depends_on = [aws_codedeploy_app.mfb_codedeploy_app]
+  app_name              = "${aws_codedeploy_app.mfb_codedeploy_app.name}"
+  deployment_group_name = "mfb-platform-device-mgmt-ms-group"
+  service_role_arn      = "${aws_iam_role.mfb_codedeploy_role.arn}"
+  
+  ec2_tag_set {
+    ec2_tag_filter {
+      key   = "Name"
+      type  = "KEY_AND_VALUE"
+      value = "mfb-instance"
+    }
+  }
+
+
+  auto_rollback_configuration {
+    enabled = true
+    events  = ["DEPLOYMENT_FAILURE"]
+  }
+}
+
 # resource "aws_iam_role" "mfb_codepipeline" {
 #   name = "staging-sfx-platform-codepipeline-role"
 
