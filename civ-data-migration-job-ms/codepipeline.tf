@@ -24,7 +24,7 @@ resource "aws_codepipeline" "civ_codepipeline_project" {
       configuration = {
         ConnectionArn        = var.codestar_connector_credentials
         FullRepositoryId     = var.repo_id
-        BranchName           = (var.environment == "prod" ? "master" : var.environment == "staging" ? "snapshot-dev" : "DEVOPSS-188")
+        BranchName           = (var.environment == "prod" ? "master" : var.environment == "staging" ? "snapshot-dev" : "snapshot-dev")
         OutputArtifactFormat = "CODE_ZIP"
         DetectChanges = "false"
       }

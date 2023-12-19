@@ -7,7 +7,7 @@ env:
   variables:
     AWS_DEFAULT_REGION: us-east-1
     CONTAINER_NAME: data-migration-job-ms
-    IMAGE_REPO_NAME: civ/data-migration-job-ms
+    IMAGE_REPO_NAME: mtn-civ/data-migration-job-ms
 phases:
   pre_build:
     commands:
@@ -33,7 +33,7 @@ phases:
           --build-arg NPM_URL=$NPM_REGISTRY  
           --cache-from $AWS_ECR_REPO_URI:latest 
           --tag $AWS_ECR_REPO_URI:latest 
-          --tag $AWS_ECR_REPO_URI:$IMAGE_TAG -f apps/backend/data-migration-job-ms/Dockerfile .
+          --tag $AWS_ECR_REPO_URI:$IMAGE_TAG -f packages/backend/data-migration-job-ms/Dockerfile .
   post_build:
     commands:
       - echo Build completed on `date`
