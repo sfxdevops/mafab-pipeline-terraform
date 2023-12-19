@@ -11,6 +11,7 @@ resource "aws_ecr_repository" "civ-data-migration-job-ms-ecr" {
     project     = var.project
     Name        = var.project_component
     environment = var.environment
+    force_destroy = true # This is what enables forceful deletion
   }
 }
 

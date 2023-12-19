@@ -24,7 +24,7 @@ variable "createdby" {
 }
 
 variable "project" {
-  default = "civ"
+  default = "mtn-civ"
 }
 
 variable "environment" {

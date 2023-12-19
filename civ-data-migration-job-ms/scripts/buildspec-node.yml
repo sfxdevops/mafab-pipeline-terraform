@@ -7,7 +7,7 @@ env:
   variables:
     AWS_DEFAULT_REGION: us-east-1
     CONTAINER_NAME: data-migration-job-ms
-    IMAGE_REPO_NAME: mfb/data-migration-job-ms
+    IMAGE_REPO_NAME: civ/data-migration-job-ms
 phases:
   pre_build:
     commands:
